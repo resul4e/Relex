@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.6)
 
 #The root project and what it is called.
 #Needs to be before any find_package calls
-project("PROJECT_NAME_HERE")
+project("Relex")
 
 #Tell CMake we are using visual studio folders.
 #Also moves the CMake project to a separate folder.
