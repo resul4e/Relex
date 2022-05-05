@@ -3,5 +3,5 @@
 
 rlx::XMLElement_internal* rlx::XMLElement::operator->()
 {
-	return m_reader->m_elements[m_index];
+	return &(m_reader->m_elements[m_index]);
 }

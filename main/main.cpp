@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
 	rlx::XMLReader reader;
-	int index = reader.CreateElement(-1);
+	rlx::XMLElement index = reader.CreateElement(-1);
 
     std::cout << "Hello World" << "\n";
 
