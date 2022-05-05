@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <node name="baseNode" abstract="True">
+        <attributes>
+            <name default="UNAMED_NODE" required="True"/>
+            <id default="abcdef" required="True"/>
+        </attributes>
+    </node>
+    <node name="int" catergory="variable" base="baseNode">
+        <attributes>
+            <name default="intVar"/>
+            <value default="0" required="False"/>
+        </attributes>
+        <input/>
+        <output/>
+    </node>
+    <node name="add" category="modifiers" base="baseNode">
+        <template name="T"/>
+        <input>
+            <ref type="T"/>
+            <ref type="T"/>
+        </input>
+        <output>
+            <ref type="T"/>
+        </output>
+    </node>
+</xml>
