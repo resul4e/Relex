@@ -33,10 +33,11 @@ namespace rlx
 
 		//	private:
 
-		XMLElement CreateElements(const char* line);
+		XMLElement CreateElements(std::ifstream& aStr);
 
 
 		friend class XMLElement;
 		std::vector<XMLElement_internal> m_elements;
+		std::string m_prolog;
 	};
 }

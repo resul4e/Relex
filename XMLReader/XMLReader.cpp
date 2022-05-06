@@ -17,6 +17,17 @@ bool rlx::XMLReader::Read(std::filesystem::path aPath, XMLElement& oRoot)
 
 	char line[1024];
 	stream.getline(line, 1024);
+	if(line[0] == '<' || line[1] == '?')
+	{
+		m_prolog = line;
+	}
+	else
+	{
+		stream.clear();
+		stream.seekg(0, std::ios::beg);
+	}
+
+	oRoot = CreateElements(stream);
 
 	return true;
 }
@@ -38,7 +49,11 @@ rlx::XMLElement rlx::XMLReader::CreateElement(int aParent)
 	return {this, index};
 }
 
-rlx::XMLElement rlx::XMLReader::CreateElements(const char* line)
+rlx::XMLElement rlx::XMLReader::CreateElements(std::ifstream& aStr)
 {
+	char rawLine[1024];
+	aStr.getline(rawLine, 1024);
+	
 
+	return CreateElement(-1);
 }
