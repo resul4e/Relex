@@ -1,6 +1,8 @@
 #include "XMLReader.h"
 #include <fstream>
 
+#include "Lexer.h"
+
 rlx::XMLReader::~XMLReader()
 {
 	m_elements.clear();
@@ -15,19 +17,8 @@ bool rlx::XMLReader::Read(std::filesystem::path aPath, XMLElement& oRoot)
 		return false;
 	}
 
-	char line[1024];
-	stream.getline(line, 1024);
-	if(line[0] == '<' || line[1] == '?')
-	{
-		m_prolog = line;
-	}
-	else
-	{
-		stream.clear();
-		stream.seekg(0, std::ios::beg);
-	}
-
-	oRoot = CreateElements(stream);
+	std::vector<Token> tokens;
+	Lexer::Lex(stream, tokens);
 
 	return true;
 }
