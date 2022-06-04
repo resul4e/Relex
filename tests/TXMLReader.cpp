@@ -10,14 +10,14 @@ TEST(TXMLReader, Construct)
 TEST(TXMLReader, ReadNonExisting)
 {
 	rlx::XMLReader reader;
-	auto el = reader.CreateElement(-1);
-	EXPECT_FALSE(reader.Read("NON_EXISTING_PATH_NAME", el));
+	rlx::XMLDocument doc;
+	EXPECT_FALSE(reader.Read("NON_EXISTING_PATH_NAME", doc));
 }
 
 TEST(TXMLReader, ReadExisting)
 {
 	rlx::XMLReader reader;
-	auto el = reader.CreateElement(-1);
-	EXPECT_FALSE(reader.Read("../../../tests/testdata/testApp.gml", el));
-	EXPECT_GT(el->m_children.size(), 0);
+	rlx::XMLDocument doc;
+	EXPECT_FALSE(reader.Read("../../../tests/testdata/testApp.gml", doc));
+	EXPECT_GT(doc->m_children.size(), 0);
 }

@@ -19,9 +19,8 @@ struct Token
 	int m_startPos = -1;
 };
 
-class Lexer
+namespace Lexer
 {
-public:
-	static void Lex(std::ifstream& aStream, std::vector<Token>& oTokens);
+	void Lex(std::ifstream& aStream, std::vector<Token>& oTokens);
 };
 

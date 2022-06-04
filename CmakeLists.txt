@@ -10,8 +10,10 @@ project("Relex")
 #Also moves the CMake project to a separate folder.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+set(CMAKE_TOOLCHAIN_FILE "C:\\Apps\\Programming\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
+
 include_directories(BEFORE "XMLReader")
 
-add_subdirectory(XMLReader)
+#add_subdirectory(XMLReader)
 add_subdirectory(main)
-add_subdirectory(tests)
+#add_subdirectory(tests)

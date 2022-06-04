@@ -1,34 +1,43 @@
 #include "Lexer.h"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
-void Lexer::Lex(std::ifstream& aStream, std::vector<Token>& oTokens)
+namespace Lexer
 {
-	int currentPos = 0;
-	while(!aStream.eof())
+	void Lex(std::ifstream& aStream, std::vector<Token>& oTokens)
 	{
-		int tokenStartPos = currentPos;
-		int nextChar = aStream.get();
+		int currentPos = 0;
+		char nextChar;
+		while (aStream.get(nextChar))
+		{
+			int tokenStartPos = currentPos;
 
-		if (std::isspace(nextChar))
-		{
-			currentPos++;
-		}
-		else if (nextChar == '<')
-		{
-			currentPos++;
-			std::stringstream ss;
-			while (nextChar != '>')
+			if (std::isspace(nextChar))
 			{
-				ss << static_cast<char>(nextChar);
-
-				nextChar = aStream.get();
 				currentPos++;
 			}
-			ss << static_cast<char>(nextChar);
+			else if (nextChar == '<')
+			{
+				currentPos++;
+				std::stringstream ss;
+				while (nextChar != '>')
+				{
+					ss << nextChar;
 
-			oTokens.emplace_back(Token::Type::TAG, ss.str(), tokenStartPos);
+					aStream.get(nextChar);
+					currentPos++;
+				}
+				ss << nextChar;
 
+				oTokens.emplace_back(Token::Type::TAG, ss.str(), tokenStartPos);
+
+			}
+			else
+			{
+				std::cout << "While lexing ignoring character: " << nextChar << "(" << static_cast<int>(nextChar) << ") \n";
+			}
 		}
 	}
 }
+

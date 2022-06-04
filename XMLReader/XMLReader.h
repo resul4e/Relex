@@ -8,6 +8,15 @@ namespace rlx
 {
 	class XMLElement;
 
+	struct XMLDocument
+	{
+		XMLElement& Root() const;
+
+		XMLReader* m_reader;
+		size_t m_prolog = INVALID_ELEMENT_INDEX;
+		size_t m_root = INVALID_ELEMENT_INDEX;
+	};
+
 	struct XMLAttribute_internal
 	{
 		const char* name;
@@ -27,9 +36,9 @@ namespace rlx
 		XMLReader() = default;
 		~XMLReader();
 
-		bool Read(std::filesystem::path aPath, XMLElement& oRoot);
+		bool Read(std::filesystem::path aPath, XMLDocument& oDocument);
 
-		XMLElement CreateElement(int aParent);
+		XMLElement CreateElement(size_t aParent);
 
 		//	private:
 
@@ -37,7 +46,7 @@ namespace rlx
 
 
 		friend class XMLElement;
-		std::vector<XMLElement_internal> m_elements;
-		std::string m_prolog;
+		std::vector<XMLElement> m_elements;
+		std::vector<XMLElement_internal> m_internalElements;
 	};
 }

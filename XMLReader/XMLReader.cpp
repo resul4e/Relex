@@ -3,12 +3,18 @@
 
 #include "Lexer.h"
 
-rlx::XMLReader::~XMLReader()
+
+rlx::XMLElement& rlx::XMLDocument::Root() const
 {
-	m_elements.clear();
+	return m_reader->m_elements[m_root];
 }
 
-bool rlx::XMLReader::Read(std::filesystem::path aPath, XMLElement& oRoot)
+rlx::XMLReader::~XMLReader()
+{
+	m_internalElements.clear();
+}
+
+bool rlx::XMLReader::Read(std::filesystem::path aPath, XMLDocument& oDocument)
 {
 	std::ifstream stream(aPath.c_str());
 
@@ -17,26 +23,42 @@ bool rlx::XMLReader::Read(std::filesystem::path aPath, XMLElement& oRoot)
 		return false;
 	}
 
+	oDocument.m_reader = this;
+
 	std::vector<Token> tokens;
 	Lexer::Lex(stream, tokens);
+
+	if(tokens[0].m_text[1] == '?')
+	{
+		CreateElement(INVALID_ELEMENT_INDEX);
+		tokens.erase(tokens.begin());
+	}
+
+	for(const auto& tok : tokens)
+	{
+
+		CreateElement(INVALID_ELEMENT_INDEX);
+	}
+
+	stream.close();
 
 	return true;
 }
 
-rlx::XMLElement rlx::XMLReader::CreateElement(int aParent)
+rlx::XMLElement rlx::XMLReader::CreateElement(size_t aParent)
 {
-	const int index = m_elements.size();
+	const size_t index = m_internalElements.size();
 
 	XMLElement_internal el{};
 	el.m_parent = { this, aParent };
 
-	if(aParent != -1)
+	if(aParent != INVALID_ELEMENT_INDEX)
 	{
-		m_elements[aParent].m_children.push_back({ this, index });
+		m_internalElements[aParent].m_children.push_back({ this, index });
 	}
 
 
-	m_elements.push_back(el);
+	m_internalElements.push_back(el);
 	return {this, index};
 }
 
@@ -46,5 +68,5 @@ rlx::XMLElement rlx::XMLReader::CreateElements(std::ifstream& aStr)
 	aStr.getline(rawLine, 1024);
 	
 
-	return CreateElement(-1);
+	return CreateElement(INVALID_ELEMENT_INDEX);
 }
